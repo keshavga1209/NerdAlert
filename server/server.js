@@ -14,7 +14,7 @@ const PORT = 8081;
 
 const server = http.Server(app);
 
-// app.use(bodyParser.json({ limit: "20mb", extended: true }));
+app.use(bodyParser.json({ limit: "20mb", extended: true }));
 app.use(fileUpload());
 app.use(bodyParser.urlencoded({ limit: "20mb", extended: true }));
 

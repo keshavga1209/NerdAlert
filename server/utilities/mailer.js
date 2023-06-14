@@ -1,14 +1,15 @@
 import nodemailer from "nodemailer";
+import { NODEMAILER_EMAIL, NODEMAILER_PASSWORD } from "../config/constants.js";
 
 let transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-        user: "auto.generated.email.smtp@gmail.com",
-        pass: "cpsqoxdjxbohceed",
+        user: NODEMAILER_EMAIL,
+        pass: NODEMAILER_PASSWORD,
     },
 });
 
-const subject = "Verify your Email";
+// const subject = "Verify your Email";
 const text = ""
 
 const getHtml = (token) => {
@@ -24,9 +25,28 @@ const getHtml = (token) => {
     // `)
 }
 
-export const sendMail = async (email, token) => {
+export const sendEmail = async (subject, email, html) => {
     let mailOptions = {
-        from: 'auto.generated.email.smtp@gmail.com',
+        from: NODEMAILER_EMAIL,
+        to: email,
+        subject,
+        text,
+        html: html,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            return console.log(error);
+        }
+        console.log("Message sent: %s", info.messageId);
+        // Preview only available when sending through an Ethereal account
+        console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+    });
+}
+
+export const sendMail = async (subject, email, token) => {
+    let mailOptions = {
+        from: NODEMAILER_EMAIL,
         to: email,
         subject,
         text,

@@ -24,9 +24,10 @@ export default function (io) {
                     message: "User already exists",
                 });
             }
+            const subject = "Verify your Email";
 
             if (prevToken) {
-                sendMail(email, prevToken._id.toString());
+                sendMail(subject, email, prevToken._id.toString());
 
                 return res.status(201).send({
                     success: true,
@@ -41,7 +42,7 @@ export default function (io) {
                 password,
             });
 
-            sendMail(email, token._id.toString());
+            sendMail(subject, email, token._id.toString());
             // console.log(email);
 
             return res.status(201).send({

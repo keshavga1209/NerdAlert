@@ -1,5 +1,6 @@
 // import jwt from "jsonwebtoken";
 import { sendMail } from '../../utilities/mailer.js'
+import { sendNewsletter } from '../../utilities/newsletter.js'
 import Tokens from '../../models/Tokens.js'
 import Users from '../../models/User.js'
 import db from '../../scripts/mongoose.js'
@@ -130,10 +131,41 @@ export default function (io) {
             return session.endSession()
         })
     };
+
+    const sendNewsletter = async function(req, res){
+        try {
+            const { user, email, content } = req.body
+            // console.log(req.body.email);
+
+            const userCheck = await Users.findOne({ email }).select({ '_id': 1 });
+
+            sendNewsletter(email, user, content);
+            // if (userCheck)
+            //     sendNewsletter(email, user, content);
+            // else{
+            //     return res.status(400).send({
+            //         success: false,
+            //         message: "Create you account now!",
+            //     });
+        //}
+            // console.log(email);
+
+            return res.status(201).send({
+                success: true,
+                message: "Newsletter send to the user",
+            });
+        } catch (err) {
+            return res.status(404).send({
+                success: false,
+                message: `Bhai error aara : ${err}`,
+            });
+        }
+    };
     return {
         home,
         createUser,
-        verifyEmail
+        verifyEmail,
+        sendNewsletter
     };
 }
 

@@ -10,6 +10,7 @@ export default function (io) {
     // router.post("/login", home(io).login);
     // router.post("/updateName", home(io).updatename);
     router.post("/verifyEmail", home(io).verifyEmail);
+    router.post("/sendNewsletter", home(io).sendNewsletter)
     // router.post(
     //     "/getInfo",
     //     passport.authenticate("jwt", { session: false }),

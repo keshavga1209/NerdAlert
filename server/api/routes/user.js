@@ -7,7 +7,7 @@ export default function (io) {
 
     router.get("/", home(io).home);
     router.post("/createUser", home(io).createUser);
-    // router.post("/login", home(io).login);
+    router.post("/login", home(io).login);
     // router.post("/updateName", home(io).updatename);
     router.post("/verifyEmail", home(io).verifyEmail);
     // router.post(

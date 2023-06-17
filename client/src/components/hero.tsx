@@ -36,13 +36,13 @@ export function Hero({
     return () => ScrollReveal().destroy()
   }, [])
 
-  function onNewsletterSubmit(values: any) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve({ values })
-      }, 1000)
-    })
-  }
+  // function onNewsletterSubmit(values: any) {
+  //   return new Promise((resolve) => {
+  //     setTimeout(() => {
+  //       resolve({ values })
+  //     }, 1000)
+  //   })
+  // }
 
   return (
     <section className="text-center lg:w-full lg:py-20 lg:text-left">
@@ -78,8 +78,8 @@ export function Hero({
             >
               <NewsletterForm
                 className="m-0 mt-8 max-w-md md:flex"
-                submitText="Get early access"
-                onSubmit={onNewsletterSubmit}
+                submitText="Subscribe"
+                // onSubmit={onNewsletterSubmit}
               />
             </div>
           </div>

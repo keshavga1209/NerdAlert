@@ -9,19 +9,28 @@ let transporter = nodemailer.createTransport({
     },
 });
 
-// const subject = "Verify your Email";
+const subject = "Here's your weekly research diet";
 const text = ""
 
-export const sendEmail = async (subject, email, html) => {
+//yaha pe content mein json object hoga jise parse krke html list mein dalna
+const getHtml = (user, content) => {
+    return (`
+    <h1>Hello ${user}, have a look at the new research from your interests.</h1>
+    <h2>here you go:${content} </h2>
+    
+    `)
+}
+
+export const sendNewsletter = async (email, user, content) => {
     let mailOptions = {
-        from: NODEMAILER_EMAIL,
+        from: 'auto.generated.email.smtp@gmail.com',
         to: email,
         subject,
         text,
-        html: html,
+        html: getHtml(user, content),
     };
 
-    transporter.sendMail(mailOptions, (error, info) => {
+    transporter.sendNewsletter(mailOptions, (error, info) => {
         if (error) {
             return console.log(error);
         }

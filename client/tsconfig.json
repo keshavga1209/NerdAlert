@@ -19,6 +19,6 @@
     "target": "ESNext",
     "typeRoots": ["./node_modules/@types"]
   },
-  "include": ["**/*.ts", "**/*.tsx"],
+  "include": ["**/*.ts", "**/*.tsx", "src/components/preferneces.js", "src/components/newsletter-form.jsx"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

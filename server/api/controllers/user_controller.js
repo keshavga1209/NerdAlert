@@ -133,6 +133,7 @@ export default function (io) {
             return session.endSession()
         })
     };
+
     return {
         home,
         createUser,

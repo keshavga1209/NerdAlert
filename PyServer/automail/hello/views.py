@@ -53,15 +53,29 @@ def articles(email, search_terms):
 
         for record in page_data["records"]:
              subResult = {}
-             subResult["articleTitle"] = record["articleTitle"]
-             subResult["documentLink"] = 'https://ieeexplore.ieee.org'+record["documentLink"]
+             subResult["title"] = record["articleTitle"]
+             subResult["link"] = 'https://ieeexplore.ieee.org'+record["documentLink"]
              result.append(subResult)
  
     final_result = {"email": email, "papers": result}
     json_object = json.dumps(final_result, indent = 4) 
     print(type(json_object))
-
+    
     return (json_object)
+
+def send_data_to_node(data):
+    url = 'http://localhost:8081/bifrost/sendPapers'
+    headers = {'Content-Type': 'application/json'}
+    # response = requests.post(url, json=data, headers=headers)
+    # payload = json.dumps(data)
+    response = requests.request("POST", url, headers=headers, data=data)
+    
+    # Check the response status
+    if response.status_code == 200:
+        print('Data sent successfully to Node.js server')
+    else:
+        print(response.status_code)
+        print('Failed to send data to Node.js server')
 
 @csrf_exempt 
 def receive_data(request):
@@ -71,7 +85,7 @@ def receive_data(request):
             fetched_articles = articles(received_json_data[0], received_json_data[1:])
             print(fetched_articles)
             # print(type(fetched_articles))
-
+            send_data_to_node(fetched_articles)
             return HttpResponse(fetched_articles)
             # return HttpResponse('it was post request: '+str(received_json_data))
     

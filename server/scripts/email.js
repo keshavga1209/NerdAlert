@@ -1,14 +1,14 @@
 export const getHtmlEmailverification = (token) => {
-    return (`
-    <h1>Hello World, we are just getting started</h1>
-    <h2>here is your OTP: ${token}</h2>
-    `)
     // return (`
-    //     <h2>Kindly click on the link to verify your email address<h2><br>
-    //     <a href="http://localhost:3000/verify/${token}"><h1>Verify</h1></a><br>
-    //     <br>
-    //     <h2>Please do NOT reply to this email</h2>
+    // <h1>Hello World, we are just getting started</h1>
+    // <h2>here is your OTP: ${token}</h2>
     // `)
+    return (`
+        <h2>Kindly click on the link to verify your email address<h2><br>
+        <a href="http://localhost:5173/kv-react/verify/${token}"><h1>Verify</h1></a><br>
+        <br>
+        <h2>Please do NOT reply to this email</h2>
+    `)
 }
 
 export const getHtmlEmailPapers = (papers, name, topic) => {

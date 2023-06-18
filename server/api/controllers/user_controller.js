@@ -1,8 +1,9 @@
 import jwt from "jsonwebtoken";
-import { sendMail } from '../../utilities/mailer.js'
+import { sendEmail } from '../../utilities/mailer.js'
 import Tokens from '../../models/Tokens.js'
 import Users from '../../models/User.js'
 import db from '../../scripts/mongoose.js'
+import { getHtmlEmailverification } from "../../scripts/email.js";
 
 export default function (io) {
     const home = async function (req, res) {
@@ -19,7 +20,7 @@ export default function (io) {
             const userCheck = await Users.findOne({ email }).select({ '_id': 1 });
 
             if (userCheck) {
-                return res.status(400).send({
+                return res.status(200).send({
                     success: false,
                     message: "User already exists",
                 });
@@ -27,7 +28,8 @@ export default function (io) {
             const subject = "Verify your Email";
 
             if (prevToken) {
-                sendMail(subject, email, prevToken._id.toString());
+                let html = getHtmlEmailverification(prevToken._id.toString());
+                sendEmail(subject, email, html);
 
                 return res.status(201).send({
                     success: true,
@@ -42,7 +44,8 @@ export default function (io) {
                 password,
             });
 
-            sendMail(subject, email, token._id.toString());
+            let html = getHtmlEmailverification(token._id.toString());
+            sendEmail(subject, email, html);
             // console.log(email);
 
             return res.status(201).send({
@@ -62,14 +65,14 @@ export default function (io) {
             let user = await Users.findOne({ email: req.body.email });
             // no user found
             if (!user) {
-                return res.status(401).send({
+                return res.status(200).send({
                     success: false,
                     message: "Could not find the user",
                 });
             }
             // Incorrect Password
             if (req.body.password != user.password) {
-                return res.status(401).send({
+                return res.status(201).send({
                     success: false,
                     message: "Password Invalid",
                 });
@@ -103,7 +106,6 @@ export default function (io) {
             session = _session;
 
             session.startTransaction();
-            console.log(req.body.token);
             return Tokens.findOneAndDelete({ _id: req.body.token }).session(session);
         }).then((userData) => {
             if (!userData) throw Error("Invalid token");

@@ -1,0 +1,99 @@
+[1mdiff --git a/PyServer/automail/automail/__pycache__/__init__.cpython-39.pyc b/PyServer/automail/automail/__pycache__/__init__.cpython-39.pyc[m
+[1mindex 74b5089..8ea3f5a 100644[m
+Binary files a/PyServer/automail/automail/__pycache__/__init__.cpython-39.pyc and b/PyServer/automail/automail/__pycache__/__init__.cpython-39.pyc differ
+[1mdiff --git a/PyServer/automail/automail/__pycache__/settings.cpython-39.pyc b/PyServer/automail/automail/__pycache__/settings.cpython-39.pyc[m
+[1mindex e345825..b7b80d6 100644[m
+Binary files a/PyServer/automail/automail/__pycache__/settings.cpython-39.pyc and b/PyServer/automail/automail/__pycache__/settings.cpython-39.pyc differ
+[1mdiff --git a/PyServer/automail/automail/__pycache__/urls.cpython-39.pyc b/PyServer/automail/automail/__pycache__/urls.cpython-39.pyc[m
+[1mindex fbc1a8a..cfa718e 100644[m
+Binary files a/PyServer/automail/automail/__pycache__/urls.cpython-39.pyc and b/PyServer/automail/automail/__pycache__/urls.cpython-39.pyc differ
+[1mdiff --git a/PyServer/automail/automail/__pycache__/wsgi.cpython-39.pyc b/PyServer/automail/automail/__pycache__/wsgi.cpython-39.pyc[m
+[1mindex dd0271e..0514ae7 100644[m
+Binary files a/PyServer/automail/automail/__pycache__/wsgi.cpython-39.pyc and b/PyServer/automail/automail/__pycache__/wsgi.cpython-39.pyc differ
+[1mdiff --git a/PyServer/automail/hello/__pycache__/__init__.cpython-39.pyc b/PyServer/automail/hello/__pycache__/__init__.cpython-39.pyc[m
+[1mindex 0e4baa4..e80d45e 100644[m
+Binary files a/PyServer/automail/hello/__pycache__/__init__.cpython-39.pyc and b/PyServer/automail/hello/__pycache__/__init__.cpython-39.pyc differ
+[1mdiff --git a/PyServer/automail/hello/__pycache__/admin.cpython-39.pyc b/PyServer/automail/hello/__pycache__/admin.cpython-39.pyc[m
+[1mindex 6f5bc64..d4e880b 100644[m
+Binary files a/PyServer/automail/hello/__pycache__/admin.cpython-39.pyc and b/PyServer/automail/hello/__pycache__/admin.cpython-39.pyc differ
+[1mdiff --git a/PyServer/automail/hello/__pycache__/apps.cpython-39.pyc b/PyServer/automail/hello/__pycache__/apps.cpython-39.pyc[m
+[1mindex 527af43..8197965 100644[m
+Binary files a/PyServer/automail/hello/__pycache__/apps.cpython-39.pyc and b/PyServer/automail/hello/__pycache__/apps.cpython-39.pyc differ
+[1mdiff --git a/PyServer/automail/hello/__pycache__/models.cpython-39.pyc b/PyServer/automail/hello/__pycache__/models.cpython-39.pyc[m
+[1mindex 90f2b8d..176f3f9 100644[m
+Binary files a/PyServer/automail/hello/__pycache__/models.cpython-39.pyc and b/PyServer/automail/hello/__pycache__/models.cpython-39.pyc differ
+[1mdiff --git a/PyServer/automail/hello/__pycache__/urls.cpython-39.pyc b/PyServer/automail/hello/__pycache__/urls.cpython-39.pyc[m
+[1mindex fc00093..a46e3ca 100644[m
+Binary files a/PyServer/automail/hello/__pycache__/urls.cpython-39.pyc and b/PyServer/automail/hello/__pycache__/urls.cpython-39.pyc differ
+[1mdiff --git a/PyServer/automail/hello/__pycache__/views.cpython-39.pyc b/PyServer/automail/hello/__pycache__/views.cpython-39.pyc[m
+[1mindex 9fbc405..f87062e 100644[m
+Binary files a/PyServer/automail/hello/__pycache__/views.cpython-39.pyc and b/PyServer/automail/hello/__pycache__/views.cpython-39.pyc differ
+[1mdiff --git a/PyServer/automail/hello/migrations/__pycache__/__init__.cpython-39.pyc b/PyServer/automail/hello/migrations/__pycache__/__init__.cpython-39.pyc[m
+[1mindex 276ee80..6b86ad5 100644[m
+Binary files a/PyServer/automail/hello/migrations/__pycache__/__init__.cpython-39.pyc and b/PyServer/automail/hello/migrations/__pycache__/__init__.cpython-39.pyc differ
+[1mdiff --git a/PyServer/automail/hello/views.py b/PyServer/automail/hello/views.py[m
+[1mindex f8af11c..a25f0ca 100644[m
+[1m--- a/PyServer/automail/hello/views.py[m
+[1m+++ b/PyServer/automail/hello/views.py[m
+[36m@@ -53,16 +53,30 @@[m [mdef articles(email, search_terms):[m
+ [m
+         for record in page_data["records"]:[m
+              subResult = {}[m
+[31m-             subResult["articleTitle"] = record["articleTitle"][m
+[31m-             subResult["documentLink"] = 'https://ieeexplore.ieee.org'+record["documentLink"][m
+[32m+[m[32m             subResult["title"] = record["articleTitle"][m
+[32m+[m[32m             subResult["link"] = 'https://ieeexplore.ieee.org'+record["documentLink"][m
+              result.append(subResult)[m
+  [m
+     final_result = {"email": email, "papers": result}[m
+     json_object = json.dumps(final_result, indent = 4) [m
+     print(type(json_object))[m
+[31m-[m
+[32m+[m[41m    [m
+     return (json_object)[m
+ [m
+[32m+[m[32mdef send_data_to_node(data):[m
+[32m+[m[32m    url = 'http://localhost:8081/bifrost/sendPapers'[m
+[32m+[m[32m    headers = {'Content-Type': 'application/json'}[m
+[32m+[m[32m    # response = requests.post(url, json=data, headers=headers)[m
+[32m+[m[32m    # payload = json.dumps(data)[m
+[32m+[m[32m    response = requests.request("POST", url, headers=headers, data=data)[m
+[32m+[m[41m    [m
+[32m+[m[32m    # Check the response status[m
+[32m+[m[32m    if response.status_code == 200:[m
+[32m+[m[32m        print('Data sent successfully to Node.js server')[m
+[32m+[m[32m    else:[m
+[32m+[m[32m        print(response.status_code)[m
+[32m+[m[32m        print('Failed to send data to Node.js server')[m
+[32m+[m
+ @csrf_exempt [m
+ def receive_data(request):[m
+     if request.method=='POST':[m
+[36m@@ -71,7 +85,7 @@[m [mdef receive_data(request):[m
+             fetched_articles = articles(received_json_data[0], received_json_data[1:])[m
+             print(fetched_articles)[m
+             # print(type(fetched_articles))[m
+[31m-[m
+[32m+[m[32m            send_data_to_node(fetched_articles)[m
+             return HttpResponse(fetched_articles)[m
+             # return HttpResponse('it was post request: '+str(received_json_data))[m
+     [m
+[1mdiff --git a/client/.gitignore b/client/.gitignore[m
+[1mindex d451ff1..d8170a6 100644[m
+[1m--- a/client/.gitignore[m
+[1m+++ b/client/.gitignore[m
+[36m@@ -1,4 +1,5 @@[m
+ node_modules[m
+[32m+[m[32m./node_modules[m
+ .DS_Store[m
+ dist[m
+ dist-ssr[m
+[1mdiff --git a/server/config/constants.js b/server/config/constants.js[m
+[1mindex 2429138..d6afd08 100644[m
+[1m--- a/server/config/constants.js[m
+[1m+++ b/server/config/constants.js[m
+[36m@@ -1,2 +1,2 @@[m
+ export const NODEMAILER_EMAIL = "auto.generated.email.smtp@gmail.com"[m
+[31m-export const NODEMAILER_PASSWORD = "cpsqoxdjxbohceed"[m
+[32m+[m[32mexport const NODEMAILER_PASSWORD = "cpsqoxdjxbohceed"[m
+\ No newline at end of file[m

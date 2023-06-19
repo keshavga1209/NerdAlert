@@ -1,7 +1,6 @@
 import { Hero } from '@/components/hero'
 import { HeroIllustration } from '@/components/hero-illustration'
 import { Layout } from '@/components/layout'
-import {Preferences } from '@/components/preferneces.jsx'
 
 export default function HomePage() {
   return (
@@ -11,7 +10,6 @@ export default function HomePage() {
         content="Finally working"
         illustration={<HeroIllustration />}
       />
-      <Preferences/>
     </Layout>
   )
 }

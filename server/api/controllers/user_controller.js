@@ -184,29 +184,48 @@ export default function (io) {
             const users = await Users.find()
             let val = []
 
-            users.map((user, indx) => {
+            // let data = JSON.stringify([
+            //     "viditmanojpushkarna@gmail.com",
+            //     "machine learning",
+            //     "blockchain"
+            // ]);
+            // console.log(data);
+
+            // let config = {
+            //     method: 'post',
+            //     maxBodyLength: Infinity,
+            //     url: 'http://127.0.0.1:8000/receive_data',
+            //     headers: {
+            //         'Content-Type': 'application/json'
+            //     },
+            //     data: data
+            // };
+
+            // await axios.request(config).catch((error) => {
+            //         console.log( "Error in request:", error);
+            //     });
+
+
+            users.forEach(async(user, indx) => {
                 let pref = user.preferences
                 pref.splice(0, 0, user.email);
                 val.push(pref);
-                let data = JSON.stringify([
-                    "keshavg1209@gmail.com",
-                    "machine learning",
-                    "blockchain"
-                ]);
-
+                let data = JSON.stringify(pref);
+                console.log(user.email);
+    
                 let config = {
                     method: 'post',
                     maxBodyLength: Infinity,
-                    url: 'http://localhost:8000/receive_data',
+                    url: 'http://127.0.0.1:8000/receive_data',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     data: data
                 };
-
-                axios.request(config)
-                    .catch((error) => {
-                        console.log(error);
+    
+                await axios.request(config).catch((error) => {
+                        console.log(pref);
+                        console.log( "Error in request for user", user.name);
                     });
             })
 

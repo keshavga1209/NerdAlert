@@ -50,12 +50,14 @@ def articles(email, search_terms):
                 headers=headers
             )
         page_data = r.json()
-
-        for record in page_data["records"]:
-             subResult = {}
-             subResult["title"] = record["articleTitle"]
-             subResult["link"] = 'https://ieeexplore.ieee.org'+record["documentLink"]
-             result.append(subResult)
+        if "records" not in page_data:
+             result.append({})
+        else:
+            for record in page_data["records"]:
+                subResult = {}
+                subResult["title"] = record["articleTitle"]
+                subResult["link"] = 'https://ieeexplore.ieee.org'+record["documentLink"]
+                result.append(subResult)
  
     final_result = {"email": email, "papers": result}
     json_object = json.dumps(final_result, indent = 4) 
@@ -71,7 +73,7 @@ def send_data_to_node(data):
     response = requests.request("POST", url, headers=headers, data=data)
     
     # Check the response status
-    if response.status_code == 200:
+    if response.status_code == 201:
         print('Data sent successfully to Node.js server')
     else:
         print(response.status_code)
@@ -81,9 +83,11 @@ def send_data_to_node(data):
 def receive_data(request):
     if request.method=='POST':
             received_json_data=json.loads(request.body)
-            
+            print("hello -------- hello")
+            print(received_json_data)
+        
             fetched_articles = articles(received_json_data[0], received_json_data[1:])
-            print(fetched_articles)
+            # print(fetched_articles)
             # print(type(fetched_articles))
             send_data_to_node(fetched_articles)
             return HttpResponse(fetched_articles)

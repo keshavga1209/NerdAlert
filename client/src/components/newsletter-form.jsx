@@ -2,6 +2,7 @@ import classnames from 'clsx'
 import { ChangeEvent, FormEvent } from 'react'
 import { useState, useEffect } from 'react'
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom'
 
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
@@ -25,6 +26,8 @@ export function NewsletterForm({
   submitText
 }) {
 
+  const navigate = useNavigate()
+
   const [tasks, setTasks] = useState([]);
   const [newTask, setTask] = useState("");
   const [emptyTaskError, setEmptyTaskError] = useState(false);
@@ -47,6 +50,7 @@ export function NewsletterForm({
     }
     else {
       console.log("bhakk")
+      navigate('/login')
       // setUserEmail("keshavg1209@gmail.com")
     }
   }, []);

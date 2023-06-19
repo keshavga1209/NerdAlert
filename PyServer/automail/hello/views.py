@@ -44,7 +44,7 @@ def articles(email, search_terms):
                     "returnFacets": ["ALL"],
                     "returnType": "SEARCH",
                     "pageNumber": page_no,
-                    "rowsPerPage":2,
+                    "rowsPerPage":2 ,
                     "sortType": "newest"
                 },
                 headers=headers

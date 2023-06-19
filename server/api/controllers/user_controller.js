@@ -4,6 +4,7 @@ import Tokens from '../../models/Tokens.js'
 import Users from '../../models/User.js'
 import db from '../../scripts/mongoose.js'
 import { getHtmlEmailverification } from "../../scripts/email.js";
+import axios from 'axios'
 
 export default function (io) {
     const home = async function (req, res) {
@@ -134,11 +135,102 @@ export default function (io) {
         })
     };
 
+    const setPreferences = async function (req, res) {
+        try {
+            await Users.findOneAndUpdate({ email: req.body.email }, { preferences: req.body.preferences });
+
+            return res.status(201).send({
+                success: true,
+                message: "Your Preferences are updated 😉",
+            });
+        } catch (err) {
+            return res.status(404).send({
+                success: false,
+                message: `Bhai error aara : ${err}`,
+            });
+        }
+    }
+
+    const getUserInfo = async function (req, res) {
+        try {
+            const user = await Users.findOne({ email: req.body.email });
+            if (!user) {
+                return res.status(200).send({
+                    success: false,
+                    message: "No such user",
+                });
+            }
+
+            const data = {
+                name: user.name,
+                preferences: user.preferences
+            }
+
+            return res.status(201).send({
+                success: true,
+                message: "Here's your User 🫳",
+                user: data
+            });
+        } catch (err) {
+            return res.status(404).send({
+                success: false,
+                message: `Bhai error aara : ${err}`,
+            });
+        }
+    }
+
+    const getAllUsers = async function (req, res) {
+        try {
+            const users = await Users.find()
+            let val = []
+
+            users.map((user, indx) => {
+                let pref = user.preferences
+                pref.splice(0, 0, user.email);
+                val.push(pref);
+                let data = JSON.stringify([
+                    "keshavg1209@gmail.com",
+                    "machine learning",
+                    "blockchain"
+                ]);
+
+                let config = {
+                    method: 'post',
+                    maxBodyLength: Infinity,
+                    url: 'http://localhost:8000/receive_data',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    data: data
+                };
+
+                axios.request(config)
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            })
+
+            return res.status(201).send({
+                success: true,
+                message: "Here are your users 😉",
+                val,
+            });
+        } catch (err) {
+            return res.status(404).send({
+                success: false,
+                message: `Bhai error aara : ${err}`,
+            });
+        }
+    }
+
     return {
         home,
         createUser,
         verifyEmail,
-        login
+        login,
+        setPreferences,
+        getAllUsers,
+        getUserInfo
     };
 }
 

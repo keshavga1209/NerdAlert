@@ -14,7 +14,12 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-})
+    preferences: [
+        {
+            type: String,
+        },
+    ]
+});
 
 const Users = mongoose.model('Users', userSchema)
 

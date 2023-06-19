@@ -6,7 +6,6 @@ import { Server } from "socket.io";
 
 import routes from "./api/routes/index.js";
 import fileUpload from "express-fileupload";
-// import { job } from "./utilities/scheduler.js";
 
 // fire up the express app
 const app = express();
@@ -43,3 +42,4 @@ export { server, app }
 
 // add server self pinging
 // job()
+// pingAllUsers()

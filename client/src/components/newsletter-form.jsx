@@ -3,6 +3,8 @@ import { ChangeEvent, FormEvent } from 'react'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+// import { Redirect } from 'react-router-dom';
+// import { useHistory } from 'react-router';
 
 import Fab from '@mui/material/Fab'
 import AddIcon from '@mui/icons-material/Add'
@@ -25,6 +27,7 @@ export function NewsletterForm({
   submitText,
 }) {
   const navigate = useNavigate()
+  // const history = useHistory();
 
   const [tasks, setTasks] = useState([])
   const [newTask, setTask] = useState('')
@@ -43,14 +46,46 @@ export function NewsletterForm({
 
     // Check if the email is stored
     if (storedEmail) {
-      setUserEmail(storedEmail)
-      console.log(storedEmail)
-    } else {
-      console.log('bhakk')
-      navigate('/login')
-      // setUserEmail("keshavg1209@gmail.com")
+      setUserEmail(storedEmail);
     }
-  }, [])
+    else {
+      console.log("bhakk")
+      navigate('/login')
+    }
+
+  }, []);
+
+  useEffect(() => {
+    const fetchUserPreferences = async () => {
+      try {
+        const req = {
+          email: userEmail
+        };
+        const response = await axios.post('http://localhost:8081/user/getUserInfo', req);
+    
+        if (response.data.success) {
+          const {user} = response.data;
+          
+          // Find the user's preferences based on their email
+          const userPreferences = user.preferences
+          console.log(userPreferences)
+          if (userPreferences && userPreferences.length > 1) {
+            // Remove the first element (email) and get the remaining preferences
+            const preferences = userPreferences.slice(1);
+            console.log(preferences)
+            setTasks(preferences);
+          }
+        } else {
+          throw new Error(response.data.message);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    
+    // Fetch user preferences when the component mounts
+    fetchUserPreferences();
+  }, [userEmail]);
 
   const handleAdd = (event) => {
     event.preventDefault()
@@ -74,14 +109,14 @@ export function NewsletterForm({
   const handleSubmit = async () => {
     console.log(tasks)
     try {
-      const response = await axios.post(
-        'http://localhost:8081/user/setPreferences',
-        {
-          email: userEmail,
-          preferences: tasks,
-        }
-      )
 
+      const req = {
+        email: userEmail,
+        preferences: tasks,
+      }
+      const response = await axios.post('http://localhost:8081/user/setPreferences',req).then()
+      console.log(userEmail)
+      console.log(tasks)
       if (response.status !== 201) {
         throw new Error('Failed to set preferences.')
       }
@@ -92,7 +127,20 @@ export function NewsletterForm({
     }
   }
 
+  const storedEmail2 = localStorage.getItem('userEmail');
+
+  // if (!storedEmail2) {
+  //   console.log("User not logged in. Redirecting to login page...");
+  //   return <Redirect to="/login" />;
+  // }
+  // if (!storedEmail2) {
+  //   console.log("User not logged in. Redirecting to login page...");
+  //   navigate('/login');
+  //   return null; // Render nothing since the user will be redirected
+  // }
+
   return (
+    // {if(storedEmail2) }
     <>
       <form
         onSubmit={handleAdd}

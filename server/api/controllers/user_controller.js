@@ -5,6 +5,7 @@ import Users from '../../models/User.js'
 import db from '../../scripts/mongoose.js'
 import { getHtmlEmailverification } from "../../scripts/email.js";
 import axios from 'axios'
+import { pingAllUsers } from "../../scripts/pingUsers.js";
 
 export default function (io) {
     const home = async function (req, res) {
@@ -181,58 +182,38 @@ export default function (io) {
 
     const getAllUsers = async function (req, res) {
         try {
-            const users = await Users.find()
-            let val = []
 
-            // let data = JSON.stringify([
-            //     "viditmanojpushkarna@gmail.com",
-            //     "machine learning",
-            //     "blockchain"
-            // ]);
-            // console.log(data);
+            const success = await pingAllUsers();
+            if (success == false) throw Error("pinging failed");
+            // const users = await Users.find()
+            // let val = []
 
-            // let config = {
-            //     method: 'post',
-            //     maxBodyLength: Infinity,
-            //     url: 'http://127.0.0.1:8000/receive_data',
-            //     headers: {
-            //         'Content-Type': 'application/json'
-            //     },
-            //     data: data
-            // };
+            // users.forEach(async (user, indx) => {
+            //     let pref = user.preferences
+            //     pref.splice(0, 0, user.email);
+            //     val.push(pref);
+            //     let data = JSON.stringify(pref);
+            //     console.log(user.email);
 
-            // await axios.request(config).catch((error) => {
-            //         console.log( "Error in request:", error);
+            //     let config = {
+            //         method: 'post',
+            //         maxBodyLength: Infinity,
+            //         url: 'http://127.0.0.1:8000/receive_data',
+            //         headers: {
+            //             'Content-Type': 'application/json'
+            //         },
+            //         data: data
+            //     };
+
+            //     await axios.request(config).catch((error) => {
+            //         console.log(pref);
+            //         console.log("Error in request for user", user.name);
             //     });
-
-
-            users.forEach(async(user, indx) => {
-                let pref = user.preferences
-                pref.splice(0, 0, user.email);
-                val.push(pref);
-                let data = JSON.stringify(pref);
-                console.log(user.email);
-    
-                let config = {
-                    method: 'post',
-                    maxBodyLength: Infinity,
-                    url: 'http://127.0.0.1:8000/receive_data',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    data: data
-                };
-    
-                await axios.request(config).catch((error) => {
-                        console.log(pref);
-                        console.log( "Error in request for user", user.name);
-                    });
-            })
+            // })
 
             return res.status(201).send({
-                success: true,
-                message: "Here are your users 😉",
-                val,
+                success,
+                message: "Pinged All Users",
             });
         } catch (err) {
             return res.status(404).send({

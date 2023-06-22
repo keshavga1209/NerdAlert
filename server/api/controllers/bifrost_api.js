@@ -1,5 +1,6 @@
 import { getHtmlEmailPapers } from "../../scripts/email.js";
 import { sendEmail } from "../../utilities/mailer.js";
+import Users from '../../models/User.js'
 
 export default function (io) {
     const home = function (req, res) {
@@ -10,7 +11,8 @@ export default function (io) {
     const sendMail = function (req, res) {
         try {
             const { papers, email } = req.body
-            const html = getHtmlEmailPapers(papers, "Vidit", "Machine Learning")
+            const user = Users.findOne({ email });
+            const html = getHtmlEmailPapers(papers, user.name)
             sendEmail("Your Weekly Scraper", email, html);
             return res.status(201).send({
                 success: true,

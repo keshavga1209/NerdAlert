@@ -51,7 +51,8 @@ def articles(email, search_terms):
             )
         page_data = r.json()
         if "records" not in page_data:
-             result.append({})
+            #  result.append({})
+            continue
         else:
             for record in page_data["records"]:
                 subResult = {}

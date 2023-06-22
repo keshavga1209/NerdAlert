@@ -71,9 +71,9 @@ export function NewsletterForm({
           console.log(userPreferences)
           if (userPreferences && userPreferences.length > 1) {
             // Remove the first element (email) and get the remaining preferences
-            const preferences = userPreferences.slice(1);
-            console.log(preferences)
-            setTasks(preferences);
+            // const preferences = userPreferences.slice(1);
+            console.log(userPreferences)
+            setTasks(userPreferences);
           }
         } else {
           throw new Error(response.data.message);

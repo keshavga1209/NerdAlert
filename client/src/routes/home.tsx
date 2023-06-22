@@ -6,8 +6,8 @@ export default function HomePage() {
   return (
     <Layout>
       <Hero
-        title="Landing template for project"
-        content="Finally working"
+        title= "Get ready to be a research geek"
+        content="Enter your interest topics here"
         illustration={<HeroIllustration />}
       />
     </Layout>

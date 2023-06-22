@@ -11,11 +11,18 @@ export const getHtmlEmailverification = (token) => {
     `)
 }
 
-export const getHtmlEmailPapers = (papers, name, topic) => {
+export const getHtmlEmailPapers = (papers, name) => {
+    if (papers.length === 0) {
+        return `
+        <h1>Your Weekly Paper :-)</h1>
+        <h2>Hi ${name},</h2>
+        <h3>Subscribe to the wIEEEkly for best recommendations of thesis of your interest 😉</h3>
+        `
+    }
     var string = `
     <h1>Your Weekly Paper :-)</h1>
     <h2>Hi ${name},</h2>
-    <h3>Enjoy your weekly dose of ${topic}: </h3>
+    <h3>Enjoy your weekly dose of papers: </h3>
     ${papers.map(({ title, link }, indx) => {
         return `
         <h4>

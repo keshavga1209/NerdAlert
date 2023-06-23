@@ -8,11 +8,15 @@ export default function (io) {
         res.send("Router is Working");
     };
 
-    const sendMail = function (req, res) {
+    const sendMail = async function (req, res) {
         try {
             const { papers, email } = req.body
-            const user = Users.findOne({ email });
-            const html = getHtmlEmailPapers(papers, user.name)
+            const user = await Users.findOne({ email });
+            if (!user) return res.status(200).send({
+                success: false,
+                message: `No Such user bro`,
+            });
+            const html = getHtmlEmailPapers(papers, user.name);
             sendEmail("Your Weekly Scraper", email, html);
             return res.status(201).send({
                 success: true,

@@ -1,2 +1,2 @@
-export const NODEMAILER_EMAIL = "auto.generated.email.smtp@gmail.com"
-export const NODEMAILER_PASSWORD = "cpsqoxdjxbohceed"
+export const NODEMAILER_EMAIL = "ENTER_YOUR_EMAIL_ID"
+export const NODEMAILER_PASSWORD = "ENTER_YOUR_APP_PASSWORD"

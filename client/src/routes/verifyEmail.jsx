@@ -38,7 +38,7 @@ export default function Verify() {
         {
           [verifiedState.TRUE]: (
             <>
-              <a href="/kv-react/signin">Login again.</a>
+              <a href="/kv-react/login">Login again.</a>
             </>
           ),
           [verifiedState.ERROR]: (

@@ -8,7 +8,7 @@ dotenv.config();
 //     `mongodb://localhost:27017/Classroom`
 // );
 mongoose.connect(
-    `mongodb+srv://devuser:projectkv@cluster0.b6ved.mongodb.net/?retryWrites=true&w=majority`,
+    ``,
     { dbName: "projectkv" }
 );
 

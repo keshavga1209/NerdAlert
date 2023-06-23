@@ -19,7 +19,7 @@ import ListItemText from '@mui/material/ListItemText'
 import Avatar from '@mui/material/Avatar'
 import FolderIcon from '@mui/icons-material/Folder'
 import ArticleIcon from '@mui/icons-material/Article'
-
+import { Toaster, toast } from 'react-hot-toast'
 
 export function NewsletterForm({
   className,
@@ -46,26 +46,27 @@ export function NewsletterForm({
 
     // Check if the email is stored
     if (storedEmail) {
-      setUserEmail(storedEmail);
-    }
-    else {
-      console.log("bhakk")
+      setUserEmail(storedEmail)
+    } else {
+      console.log('bhakk')
       navigate('/login')
     }
-
-  }, []);
+  }, [])
 
   useEffect(() => {
     const fetchUserPreferences = async () => {
       try {
         const req = {
-          email: userEmail
-        };
-        const response = await axios.post('http://localhost:8081/user/getUserInfo', req);
-    
+          email: userEmail,
+        }
+        const response = await axios.post(
+          'http://localhost:8081/user/getUserInfo',
+          req
+        )
+
         if (response.data.success) {
-          const {user} = response.data;
-          
+          const { user } = response.data
+
           // Find the user's preferences based on their email
           const userPreferences = user.preferences
           console.log(userPreferences)
@@ -73,19 +74,19 @@ export function NewsletterForm({
             // Remove the first element (email) and get the remaining preferences
             // const preferences = userPreferences.slice(1);
             console.log(userPreferences)
-            setTasks(userPreferences);
+            setTasks(userPreferences)
           }
         } else {
-          throw new Error(response.data.message);
+          throw new Error(response.data.message)
         }
       } catch (error) {
-        console.log(error);
+        console.log(error)
       }
-    };
-    
+    }
+
     // Fetch user preferences when the component mounts
-    fetchUserPreferences();
-  }, [userEmail]);
+    fetchUserPreferences()
+  }, [userEmail])
 
   const handleAdd = (event) => {
     event.preventDefault()
@@ -109,25 +110,27 @@ export function NewsletterForm({
   const handleSubmit = async () => {
     console.log(tasks)
     try {
-
       const req = {
         email: userEmail,
         preferences: tasks,
       }
-      const response = await axios.post('http://localhost:8081/user/setPreferences',req).then()
+      const response = await axios
+        .post('http://localhost:8081/user/setPreferences', req)
+        .then()
       console.log(userEmail)
       console.log(tasks)
       if (response.status !== 201) {
         throw new Error('Failed to set preferences.')
       }
 
+      toast.success('Your Preferences are set')
       console.log('Preferences successfully set.')
     } catch (error) {
       console.log(error)
     }
   }
 
-  const storedEmail2 = localStorage.getItem('userEmail');
+  const storedEmail2 = localStorage.getItem('userEmail')
 
   // if (!storedEmail2) {
   //   console.log("User not logged in. Redirecting to login page...");
@@ -198,6 +201,7 @@ export function NewsletterForm({
           {submitText}
         </button>
       </div>
+      <Toaster />
     </>
   )
 }

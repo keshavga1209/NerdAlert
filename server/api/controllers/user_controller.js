@@ -3,7 +3,7 @@ import { sendEmail } from '../../utilities/mailer.js'
 import Tokens from '../../models/Tokens.js'
 import Users from '../../models/User.js'
 import db from '../../scripts/mongoose.js'
-import { getHtmlEmailverification } from "../../scripts/email.js";
+import { getHtmlEmailverification, sendUpdatedPreferences } from "../../scripts/email.js";
 import axios from 'axios'
 import { pingAllUsers } from "../../scripts/pingUsers.js";
 
@@ -139,6 +139,9 @@ export default function (io) {
     const setPreferences = async function (req, res) {
         try {
             await Users.findOneAndUpdate({ email: req.body.email }, { preferences: req.body.preferences });
+            const user = await Users.findOne({ email: req.body.email });
+            let html = sendUpdatedPreferences(user.name, req.body.preferences);
+            sendEmail("Your Preferences Updated", req.body.email, html);
 
             return res.status(201).send({
                 success: true,

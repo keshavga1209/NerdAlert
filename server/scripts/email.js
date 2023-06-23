@@ -23,11 +23,30 @@ export const getHtmlEmailPapers = (papers, name) => {
     <h1>Your Weekly Paper :-)</h1>
     <h2>Hi ${name},</h2>
     <h3>Enjoy your weekly dose of papers: </h3>
+    <ul>
     ${papers.map(({ title, link }, indx) => {
         return `
+        <li>
         <h4>
             <a href="${link}">${title}</a>
-        </h4>`
-    })}`
+        </h4>
+        </li>`
+    }).join(' ')}
+    </ul>`
+    return string
+}
+
+export const sendUpdatedPreferences = (name, preferences) => {
+    var string = `
+    <h2>Hi ${name},</h2>
+    <h3>Your updated preferences for research papers are: </h3>
+    <ul>
+    ${preferences.map((pref, indx) => {
+        return `
+        <li>
+        <h4>${pref}</h4>
+        </li>`
+    }).join(' ')}
+    </ul>`
     return string
 }

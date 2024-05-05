@@ -1,5 +1,8 @@
 # NerdAlert
 
+## About
+https://devpost.com/software/nerdalert?ref_content=user-portfolio&ref_feature=in_progress
+
 ## Usage
 
 Clone the repo
